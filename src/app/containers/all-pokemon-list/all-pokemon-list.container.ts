@@ -1,15 +1,23 @@
 import { Component, signal } from '@angular/core';
 import { SimplePokemon } from 'types/simple-pokemon.type';
 
+import { PokemonService } from 'services/pokemon.service';
 import { PokemonListComponent } from '../../components/pokemon-list/pokemon-list.component';
 
 @Component({
     selector: 'app-all-pokemon-list',
     imports: [PokemonListComponent],
+    providers: [PokemonService],
     template: ` <app-pokemon-list [pokemonList]="allPokemon()" /> `,
 })
 export class AllPokemonListContainer {
-    allPokemon = signal<SimplePokemon[]>(hardcodedResponse.results);
+    allPokemon = signal<SimplePokemon[]>([]);
+
+    constructor(private pokemonService: PokemonService) {
+        pokemonService.getAllPokemon().subscribe(response => {
+            this.allPokemon = signal<SimplePokemon[]>(response.results);
+        })
+    }
 }
 
 // TODO: replace this with a real API call
