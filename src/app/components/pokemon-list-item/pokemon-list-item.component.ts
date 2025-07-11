@@ -6,7 +6,7 @@ import { SimplePokemon } from 'types/simple-pokemon.type';
 @Component({
     selector: 'app-pokemon-list-item',
     template: `
-        <a [routerLink]="['', { outlets: { detail: [pokemon().name] } }]">
+        <a [routerLink]="['/', { outlets: { detail: [pokemon().name] } }]">
             {{ index() + 1 }}
             {{ pokemon().name | uppercase }}
         </a>

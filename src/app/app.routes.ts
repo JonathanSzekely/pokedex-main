@@ -7,5 +7,5 @@ export const routes: Routes = [
     { path: 'all', component: AllPokemonListContainer },
     { path: ':pokemonId', component: PokemonDetailContainer, outlet: 'detail' },
 
-    { path: '', redirectTo: '/all(detail:bulbasaur)', pathMatch: 'full' },
+    { path: '', redirectTo: '/all', pathMatch: 'full' },
 ];

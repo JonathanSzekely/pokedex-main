@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { injectQuery } from '@tanstack/angular-query-experimental';
 import { firstValueFrom } from 'rxjs';
 import { Pokemon } from 'types/pokemon.type';
@@ -35,16 +36,23 @@ import { PokemonInfoComponent } from '../../components/pokemon-info/pokemon-info
 })
 export class PokemonDetailContainer {
     private readonly httpClient = inject(HttpClient);
-    private readonly pokemonId = signal('bulbasaur');
+    private readonly route = inject(ActivatedRoute);
+    readonly pokemonId = signal<string>('');
 
     readonly currentPokemonInfo = injectQuery(() => ({
         queryKey: ['pokemon', this.pokemonId()],
         queryFn: () =>
-            // TODO: use https://github.com/PokeAPI/pokeapi-js-wrapper instead?
-            firstValueFrom(this.httpClient.get<Pokemon>(`/api/v2/pokemon/${this.pokemonId()}`)),
+            firstValueFrom(
+                this.httpClient.get<Pokemon>(`/api/v2/pokemon/${this.pokemonId()}`)
+            ),
     }));
 
     constructor() {
         injectTwHostClass(() => 'flex flex-col gap-4 p-5 pt-20');
+        this.route.paramMap.subscribe(paramMap => {
+            const id = paramMap.get('pokemonId');
+            if (id) this.pokemonId.set(id);
+            console.log(id);
+        });
     }
 }

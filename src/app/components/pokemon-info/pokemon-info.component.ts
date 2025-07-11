@@ -10,11 +10,13 @@ import { TypewriterComponent } from '../../typewriter/typewriter.component';
         <app-typewriter [text]="pokemonInfo()?.name" />
 
         <div class="sprite-wrapper">
-            @if (pokemonInfo(); as pokemonInfo) {
-                <div
-                    class="sprite"
-                    [style.background-image]="'url(' + pokemonInfo.sprites['front_default'] + ')'"
-                ></div>
+            @if (pokemonInfo(); as pokemonDetails) {
+                @if (pokemonDetails.sprites?.front_default) {
+                    <div
+                        class="sprite"
+                        [style.background-image]="'url(' + pokemonDetails.sprites['front_default'] + ')'"
+                    ></div>
+                }
             }
         </div>
     `,
