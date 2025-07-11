@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SimplePokemon } from 'types/simple-pokemon.type';
@@ -19,8 +19,12 @@ export class PokemonService {
   constructor(private http: HttpClient) { }
 
   getAllPokemon(limit = 20, page?: number): Observable<PaginatedPokemonResponse> {
-    return this.http.get<PaginatedPokemonResponse>(
-      `${this.apiSrc}pokemon/?${page ? 'offset=' + (page - 1) * limit : '' }&limit=${limit}`
-    );
+    let params = new HttpParams().set('limit', limit.toString());
+    if (page) {
+      const offset = (page - 1) * limit;
+      params = params.set('offset', offset.toString());
+    }
+
+    return this.http.get<PaginatedPokemonResponse>(`${this.apiSrc}pokemon/`, { params });
   }
 }
