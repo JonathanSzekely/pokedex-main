@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, EventEmitter, Output, input } from '@angular/core';
 import { SimplePokemon } from 'types/simple-pokemon.type';
 
 import { PokemonListItemComponent } from '../pokemon-list-item/pokemon-list-item.component';
@@ -27,11 +27,24 @@ import { PokemonListItemComponent } from '../pokemon-list-item/pokemon-list-item
             </section>
         </div>
 
-        <footer></footer>
+        <footer class="absolute bottom-0 left-0 right-0 p-4 flex justify-center">
+            <button
+                class="bg-cyan-300 p-2 w-48 rounded-md"
+                (click)="loadMoreClicked.emit()"
+                [disabled]="loadMoreDisabled()"
+            >
+                {{ loadMoreText() }}
+            </button>
+        </footer>
     `,
     styleUrl: './pokemon-list.component.scss',
     imports: [PokemonListItemComponent],
 })
 export class PokemonListComponent {
     readonly pokemonList = input<SimplePokemon[]>([]);
+
+    readonly loadMoreDisabled = input<boolean>(false);
+    readonly loadMoreText = input<string>('Load more');
+
+    @Output() loadMoreClicked = new EventEmitter<void>();
 }

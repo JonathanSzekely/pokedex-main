@@ -52,7 +52,6 @@ export class PokemonDetailContainer {
         this.route.paramMap.subscribe(paramMap => {
             const id = paramMap.get('pokemonId');
             if (id) this.pokemonId.set(id);
-            console.log(id);
         });
     }
 }

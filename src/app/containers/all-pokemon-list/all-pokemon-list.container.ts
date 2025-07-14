@@ -2,30 +2,36 @@ import { Component, computed, inject, Signal } from '@angular/core';
 import { injectInfiniteQuery } from '@tanstack/angular-query-experimental';
 import { SimplePokemon } from 'types/simple-pokemon.type';
 
-import { lastValueFrom } from 'rxjs';
-import { PokemonService } from 'services/pokemon.service';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import { PaginatedPokemonResponse } from 'types/paginated-pokemon-response.type';
 import { PokemonListComponent } from '../../components/pokemon-list/pokemon-list.component';
 
 @Component({
     selector: 'app-all-pokemon-list',
     imports: [PokemonListComponent],
     template: ` 
-        <app-pokemon-list [pokemonList]="allPokemon()" />
-
-        <button (click)="loadMore()" [disabled]="nextButtonDisabled()">
-            {{ nextButtonText() }}
-        </button>
+        <app-pokemon-list 
+            [pokemonList]="allPokemon()"
+            [loadMoreDisabled]="nextButtonDisabled()"
+            [loadMoreText]="nextButtonText()"
+            (loadMoreClicked)="loadMore()"
+            class="relative"
+        />        
     `,
 })
 export class AllPokemonListContainer {
+    private readonly http = inject(HttpClient);
     pageLimit: number = 30;
-    pokemonService = inject(PokemonService);
 
     query = injectInfiniteQuery(() => ({
         queryKey: ['pokemon'],
         initialPageParam: 1,
         queryFn: async ({ pageParam = 0 }) => {
-            return await lastValueFrom(this.pokemonService.getAllPokemon(this.pageLimit, pageParam));
+            const offset = pageParam * this.pageLimit;
+            return await firstValueFrom(
+                this.http.get<PaginatedPokemonResponse>(`/api/v2/pokemon?limit=${this.pageLimit}&offset=${offset}`)
+            );
         },
         getNextPageParam: (activePage) => {
             const nextUrl = activePage.next;
