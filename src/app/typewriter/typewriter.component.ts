@@ -4,7 +4,7 @@ import { Component, OnChanges, input } from '@angular/core';
     selector: 'app-typewriter',
     template: `
         @if (typeWriterText) {
-            <p>{{ typeWriterText }}</p>
+            <h2 class="text-4xl capitalize px-4 py-6">{{ typeWriterText }}</h2>
         }
     `,
     styleUrl: './typewriter.component.scss',

@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Pokemon } from 'types/pokemon.type';
+import { Pokemon } from 'pokenode-ts';
 
 import { TypewriterComponent } from '../../typewriter/typewriter.component';
 
