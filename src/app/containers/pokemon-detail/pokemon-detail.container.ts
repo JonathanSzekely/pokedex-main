@@ -13,7 +13,7 @@ import { PokemonInfoComponent } from '../../components/pokemon-info/pokemon-info
     selector: 'app-pokemon-detail',
     imports: [PokemonInfoComponent, PokemonDetailTabComponent],
     template: `
-        <div class="w-full bg-black text-white h-60 p-2 rounded-md shadow-inner">
+        <div class="w-full bg-black text-white p-2 rounded-md shadow-inner min-h-28">
             @if (currentPokemonInfo.data(); as pokemonInfo) {
                 <app-pokemon-info [pokemonInfo]="pokemonInfo" />
             }
@@ -54,8 +54,6 @@ export class PokemonDetailContainer {
                 this.httpClient.get<Pokemon>(`/api/v2/pokemon/${this.pokemonId()}`)
             ),
     }));
-
-
 
     constructor() {
         injectTwHostClass(() => 'flex flex-col gap-4 p-5 pt-20');

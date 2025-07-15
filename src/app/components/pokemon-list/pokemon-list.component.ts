@@ -29,7 +29,7 @@ import { PokemonListItemComponent } from '../pokemon-list-item/pokemon-list-item
 
         <footer class="absolute bottom-0 left-0 right-0 p-4 flex justify-center">
             <button
-                class="bg-cyan-300 p-2 w-48 rounded-md"
+                class="font-medium p-2 w-48 rounded-md {{ loadMoreDisabled() ? 'bg-cyan-100 text-gray-600 font-normal' : 'bg-cyan-300 ' }}"
                 (click)="loadMoreClicked.emit()"
                 [disabled]="loadMoreDisabled()"
             >
